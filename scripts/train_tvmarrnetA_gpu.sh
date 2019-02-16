@@ -43,7 +43,9 @@ shift
 set -e
 
 mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
+mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/status/
 rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/03001627/ /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
+rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/status/ /disk/scratch/${TEAM_NAME}/data/shapenet/status/
 export DATASET_DIR = /disk/scratch/${TEAM_NAME}/data/shapenet/
 
 source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
