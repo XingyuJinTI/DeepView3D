@@ -7,7 +7,8 @@ import util.util_img
 
 
 class Dataset2(data.Dataset):
-    data_root = './downloads/data/shapenet'
+    #data_root = './downloads/data/shapenet'
+    data_root = '/disk/scratch/teebeedee/data/shapenet'
     list_root = join(data_root, 'status')
     status_and_suffix = {
         'rgb': {
