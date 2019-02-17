@@ -154,6 +154,19 @@ class NetInterface(object):
     def test_on_batch(self, batch_ind, dataloader_out):
         raise NotImplementedError
 
+    def validate(self, dataloader):
+        steps_per_epoch = len(dataloader)
+        samples_per_epoch = _get_num_samples(dataloader)
+
+        dataiter = iter(dataloader)
+        for i in range(steps_per_epoch):
+            start_time = time.time()
+            data = next(dataiter)
+            data_time = time.time() - start_time
+            pred = self.predict(data)
+            print(pred)
+            print(batch['voxel_canon'])
+
     def train_epoch(
             self,
             dataloader,

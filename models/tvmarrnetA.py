@@ -15,6 +15,13 @@ class Model(TVMarrnetABaseModel):
             action='store_true',
             help="Use canonical-pose voxels as supervision"
         )
+
+        # Model to evaluate
+        parser.add_argument(
+            '--trained_model',
+            type=str, default=None,
+            help='Path to pretrained model'
+        )
         return parser, set()
 
     def __init__(self, opt, logger):
@@ -26,6 +33,12 @@ class Model(TVMarrnetABaseModel):
         self.voxel_key = voxel_key
         self.requires = ['rgb', 'depth', 'normal', 'silhou', voxel_key]
         self.net = Net(8)
+        
+        # For model evaluation
+        if opt.trained_model:
+            state_dict = torch.load(opt.trained_model)['nets'][0]
+            self.net.load_state_dict(state_dict)
+
         self.criterion = nn.BCEWithLogitsLoss(reduction='elementwise_mean')
         self.optimizer = self.adam(
             self.net.parameters(),
