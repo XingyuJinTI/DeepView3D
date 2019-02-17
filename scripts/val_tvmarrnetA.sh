@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-outdir=./output/tvmarrnetA
+outdir=./output/tvmarrnetA_val
 trained_model=./downloads/models/tvmarrnetA_80.pt
 
 export STUDENT_ID=$(whoami)
