@@ -3,6 +3,8 @@
 outdir=./output/tvmarrnetA
 trained_model=./downloads/models/tvmarrnetA_80.pt
 
+export STUDENT_ID=$(whoami)
+
 if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
     exit 1
@@ -14,7 +16,7 @@ shift
 
 set -e
 
-source activate shaperecon
+source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
 python validate.py \
     --net tvmarrnetA \
@@ -37,4 +39,4 @@ python validate.py \
     --tensorboard \
     $*
 
-source deactivate
+source /home/${STUDENT_ID}/miniconda3/bin/deactivate shaperecon
