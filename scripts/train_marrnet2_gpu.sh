@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-#SBATCH -N 1	  # nodes requested
-#SBATCH -n 1	  # tasks requested
+#SBATCH -N 1      # nodes requested
+#SBATCH -n 1      # tasks requested
 #SBATCH --partition=LongJobs
 #SBATCH --gres=gpu:4
 #SBATCH --mem=12000  # memory in Mb
@@ -29,7 +29,7 @@ mkdir -p /disk/scratch/${STUDENT_ID}
 export TMPDIR=/disk/scratch/${STUDENT_ID}/
 export TMP=/disk/scratch/${STUDENT_ID}/
 
-outdir=./output/tvmarrnetA_gpu
+outdir=./output/marrnet2_gpu
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
@@ -50,8 +50,8 @@ rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/s
 source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
 python train.py \
-    --net tvmarrnetA \
-    --dataset shapenet2 \
+    --net marrnet2 \
+    --dataset shapenet \
     --classes "$class" \
     --canon_sup \
     --batch_size 4 \
