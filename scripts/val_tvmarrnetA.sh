@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-outdir=./output/tvmarrnetA_val
+outdir=./output/tvmarrnetA
 trained_model=./downloads/models/tvmarrnetA_80.pt
 
 export STUDENT_ID=$(whoami)
@@ -39,4 +39,4 @@ python validate.py \
     --tensorboard \
     $*
 
-source /home/${STUDENT_ID}/miniconda3/bin/deactivate shaperecon
+source /home/${STUDENT_ID}/miniconda3/bin/deactivate
