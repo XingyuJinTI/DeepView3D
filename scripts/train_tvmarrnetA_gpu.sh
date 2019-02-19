@@ -42,10 +42,25 @@ shift
 
 set -e
 
-mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
-mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/status/
-rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/03001627/ /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
-rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/status/ /disk/scratch/${TEAM_NAME}/data/shapenet/status/
+export FILE_CHECK1=/disk/scratch/${TEAM_NAME}/data/shapenet/03001627/ue639c33f-d415-458c-8ff8-2ef68135af15/03001627_ue639c33f-d415-458c-8ff8-2ef68135af15_voxel_normalized_128.mat
+
+if [ -f "$FILE_CHECK1" ]; then
+    echo "ShapeNet files exist"
+else
+    echo "Copying ShapeNet files"
+    mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
+    rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/03001627/ /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
+fi
+
+export FILE_CHECK2=/disk/scratch/${TEAM_NAME}/data/shapenet/status/vox_rot.txt
+
+if [ -f "$FILE_CHECK2" ]; then
+    echo "Status files exist"
+else
+    echo "Copying status files"
+    mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/status/
+    rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/status/ /disk/scratch/${TEAM_NAME}/data/shapenet/status/
+fi
 
 source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
