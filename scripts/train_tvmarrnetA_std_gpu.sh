@@ -44,7 +44,7 @@ set -e
 
 export FILE_CHECK1=/disk/scratch/${TEAM_NAME}/data/shapenet/03001627/ue639c33f-d415-458c-8ff8-2ef68135af15/03001627_ue639c33f-d415-458c-8ff8-2ef68135af15_voxel_normalized_128.mat
 
-if [-f "$FILE_CHECK1"]; then
+if [ -f "$FILE_CHECK1" ]; then
     echo "ShapeNet files exist"
 else
     echo "Copying ShapeNet files"
@@ -54,7 +54,7 @@ fi
 
 export FILE_CHECK2=/disk/scratch/${TEAM_NAME}/data/shapenet/status/vox_rot.txt
 
-if [-f "$FILE_CHECK2"]; then
+if [ -f "$FILE_CHECK2" ]; then
     echo "Status files exist"
 else
     echo "Copying status files"
