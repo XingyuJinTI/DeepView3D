@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from networks.networks import ImageEncoder, VoxelDecoder
-from .tvmarrnetbase import TVMarrnetABaseModel
+from .tvmarrnetAbase import TVMarrnetABaseModel
 
 
 class Model(TVMarrnetABaseModel):
