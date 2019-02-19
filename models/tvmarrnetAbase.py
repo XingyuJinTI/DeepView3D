@@ -17,7 +17,7 @@ class TVMarrnetABaseModel(NetInterface):
     scale_25d = 100
 
     def __init__(self, opt, logger):
-        super(MarrnetBaseModel, self).__init__(opt, logger)
+        super(TVMarrnetABaseModel, self).__init__(opt, logger)
         self.opt = opt
         self.n_batches_per_epoch = opt.epoch_batches
         self.n_batches_to_vis_train = opt.vis_batches_train
