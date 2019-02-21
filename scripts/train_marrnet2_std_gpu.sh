@@ -2,7 +2,7 @@
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
 #SBATCH --partition=Standard
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:2
 #SBATCH --mem=12000  # memory in Mb
 #SBATCH --time=0-8:00:00
 
@@ -29,7 +29,7 @@ mkdir -p /disk/scratch/${STUDENT_ID}
 export TMPDIR=/disk/scratch/${STUDENT_ID}/
 export TMP=/disk/scratch/${STUDENT_ID}/
 
-outdir=./output/marrnet2_gpu
+outdir=./output/marrnet2_std_gpu
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
@@ -40,27 +40,29 @@ class="$2"
 shift # shift the remaining arguments
 shift
 
+rm -rf ${outdir}/marrnet2_shapenet_0.001_chair_canon-True/0/tensorboard
+
 set -e
 
-export FILE_CHECK1=/disk/scratch/${TEAM_NAME}/data/shapenet/03001627/ue639c33f-d415-458c-8ff8-2ef68135af15/03001627_ue639c33f-d415-458c-8ff8-2ef68135af15_voxel_normalized_128.mat
+#export FILE_CHECK1=/disk/scratch/${TEAM_NAME}/data/shapenet/03001627/ue639c33f-d415-458c-8ff8-2ef68135af15/03001627_ue639c33f-d415-458c-8ff8-2ef68135af15_voxel_normalized_128.mat
 
-if [ -f "$FILE_CHECK1" ]; then
-    echo "ShapeNet files exist"
-else
-    echo "Copying ShapeNet files"
-    mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
-    rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/03001627/ /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
-fi
+#if [ -f "$FILE_CHECK1" ]; then
+#    echo "ShapeNet files exist"
+#else
+#    echo "Copying ShapeNet files"
+#    mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
+#    rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/03001627/ /disk/scratch/${TEAM_NAME}/data/shapenet/03001627/
+#fi
 
-export FILE_CHECK2=/disk/scratch/${TEAM_NAME}/data/shapenet/status/vox_rot.txt
+#export FILE_CHECK2=/disk/scratch/${TEAM_NAME}/data/shapenet/status/vox_rot.txt
 
-if [ -f "$FILE_CHECK2" ]; then
-    echo "Status files exist"
-else
-    echo "Copying status files"
-    mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/status/
-    rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/status/ /disk/scratch/${TEAM_NAME}/data/shapenet/status/
-fi
+#if [ -f "$FILE_CHECK2" ]; then
+#    echo "Status files exist"
+#else
+#    echo "Copying status files"
+#    mkdir -p /disk/scratch/${TEAM_NAME}/data/shapenet/status/
+#    rsync -ua --progress /home/${STUDENT_ID}/GenRe-ShapeHD/downloads/data/shapenet/status/ /disk/scratch/${TEAM_NAME}/data/shapenet/status/
+#fi
 
 source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
@@ -82,6 +84,7 @@ python train.py \
     --logdir "$outdir" \
     --suffix '{classes}_canon-{canon_sup}' \
     --tensorboard \
+    --resume -1 \
     $*
 
 source /home/${STUDENT_ID}/miniconda3/bin/deactivate
