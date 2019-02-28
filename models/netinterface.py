@@ -163,7 +163,9 @@ class NetInterface(object):
         steps_per_epoch = len(dataloader)
         samples_per_epoch = _get_num_samples(dataloader)
 
+        logger.eval()
         dataiter = iter(dataloader)
+        logger.on_epoch_begin(epoch)
         for i in range(steps_per_epoch):
             start_time = time.time()
             data = next(dataiter)

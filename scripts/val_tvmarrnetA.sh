@@ -9,6 +9,8 @@
 outdir=./output/tvmarrnetA_gpu_val
 trained_model=./downloads/models/tvmarrnetA_80.pt
 
+rm -rf $outdir
+
 export STUDENT_ID=$(whoami)
 
 if [ $# -lt 2 ]; then
