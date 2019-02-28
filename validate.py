@@ -29,6 +29,85 @@ else:
 if opt.manual_seed is not None:
     loadlib.set_manual_seed(opt.manual_seed)
 
+print(str_stage, "Setting up logging directory")
+exprdir = '{}_{}_{}'.format(opt.net, opt.dataset, opt.lr)
+exprdir += ('_' + opt.suffix.format(**vars(opt))) if opt.suffix != '' else ''
+logdir = os.path.join(opt.logdir, exprdir, str(opt.expr_id))
+
+if opt.resume == 0:
+    if os.path.isdir(logdir):
+        if opt.expr_id <= 0:
+            print(
+                str_warning, (
+                    "Will remove Experiment %d at\n\t%s\n"
+                    "Do you want to continue? (y/n)"
+                ) % (opt.expr_id, logdir)
+            )
+            need_input = True
+            while need_input:
+                response = input().lower()
+                if response in ('y', 'n'):
+                    need_input = False
+            if response == 'n':
+                print(str_stage, "User decides to quit")
+                sys.exit()
+            os.system('rm -rf ' + logdir)
+        else:
+            raise ValueError(str_error +
+                             " Refuse to remove positive expr_id")
+    os.system('mkdir -p ' + logdir)
+else:
+    assert os.path.isdir(logdir)
+    opt_f_old = os.path.join(logdir, 'opt.pt')
+    opt = options_train.overwrite(opt, opt_f_old, unique_opt_params)
+
+# Save opt
+torch.save(vars(opt), os.path.join(logdir, 'opt.pt'))
+with open(os.path.join(logdir, 'opt.txt'), 'w') as fout:
+    for k, v in vars(opt).items():
+        fout.write('%20s\t%-20s\n' % (k, v))
+
+opt.full_logdir = logdir
+print(str_verbose, "Logging directory set to: %s" % logdir)
+
+###################################################
+
+print(str_stage, "Setting up loggers")
+best_model_logger = loggers.ModelSaveLogger(
+    os.path.join(logdir, 'best.pt'),
+    period=1,
+    save_optimizer=True,
+    save_best=True,
+    prev_best=prev_best
+)
+logger_list = [
+    loggers.TerminateOnNaN(),
+    loggers.ProgbarLogger(allow_unused_fields='all'),
+    loggers.CsvLogger(
+        os.path.join(logdir, 'epoch_loss.csv'),
+        allow_unused_fields='all'
+    ),
+    loggers.ModelSaveLogger(
+        os.path.join(logdir, 'nets', '{epoch:04d}.pt'),
+        period=opt.save_net,
+        save_optimizer=opt.save_net_opt
+    ),
+    loggers.ModelSaveLogger(
+        os.path.join(logdir, 'checkpoint.pt'),
+        period=1,
+        save_optimizer=True
+    ),
+    best_model_logger,
+]
+if opt.log_batch:
+    logger_list.append(
+        loggers.BatchCsvLogger(
+            os.path.join(logdir, 'batch_loss.csv'),
+            allow_unused_fields='all'
+        )
+    )
+logger = loggers.ComposeLogger(logger_list)
+
 ###################################################
 
 print(str_stage, "Setting up models")
@@ -66,7 +145,7 @@ if opt.resume != 0:
                     initial_epoch += max([int(l.split(',')[0]) for l in lines[1:]])
             else:
                 initial_epoch += opt.resume
-"""
+""
 ###################################################
 
 print(str_stage, "Setting up data loaders")
