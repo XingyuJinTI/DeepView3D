@@ -78,7 +78,7 @@ best_model_logger = loggers.ModelSaveLogger(
     period=1,
     save_optimizer=True,
     save_best=True,
-    prev_best=prev_best
+    prev_best=None
 )
 logger_list = [
     loggers.TerminateOnNaN(),
