@@ -145,7 +145,7 @@ if opt.resume != 0:
                     initial_epoch += max([int(l.split(',')[0]) for l in lines[1:]])
             else:
                 initial_epoch += opt.resume
-""
+"""
 ###################################################
 
 print(str_stage, "Setting up data loaders")
