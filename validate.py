@@ -168,4 +168,7 @@ print(str_verbose, "# val batches: " + str(len(dataloader_vali)))
 ###################################################
 
 print(str_stage, "Validating")
-model.validate(dataloader_vali)
+model.validate(
+    dataloader_vali,
+    epochs=opt.epoch
+)

@@ -158,29 +158,30 @@ class NetInterface(object):
     def test_on_batch(self, batch_ind, dataloader_out):
         raise NotImplementedError
 
-    def validate(self, dataloader):
+    def validate(self, dataloader, epochs=1):
         logger = self._logger
         steps_per_epoch = len(dataloader)
         samples_per_epoch = _get_num_samples(dataloader)
 
-        logger.eval()
-        dataiter = iter(dataloader)
-        logger.on_epoch_begin(epoch)
-        for i in range(steps_per_epoch):
-            start_time = time.time()
-            data = next(dataiter)
-            data_time = time.time() - start_time
-            logger.on_batch_begin(i)
-            batch_log, pred = self._vali2_on_batch(epoch, i, data)
-            print(pred)
-            print(data['voxel_canon'])
-            batch_log['batch'] = i
-            batch_log['epoch'] = epoch
-            batch_log['data_time'] = data_time
-            batch_log['batch_time'] = time.time() - start_time
-            logger.on_batch_end(i, batch_log)
-        epoch_log = self._internal_logger.get_epoch_log()
-        logger.on_epoch_end(epoch, epoch_log)
+        for epoch in range(0, epochs):
+            logger.eval()
+            dataiter = iter(dataloader)
+            logger.on_epoch_begin(epoch)
+            for i in range(steps_per_epoch):
+                start_time = time.time()
+                data = next(dataiter)
+                data_time = time.time() - start_time
+                logger.on_batch_begin(i)
+                batch_log, pred = self._vali2_on_batch(epoch, i, data)
+                print(pred)
+                print(data['voxel_canon'])
+                batch_log['batch'] = i
+                batch_log['epoch'] = epoch
+                batch_log['data_time'] = data_time
+                batch_log['batch_time'] = time.time() - start_time
+                logger.on_batch_end(i, batch_log)
+            epoch_log = self._internal_logger.get_epoch_log()
+            logger.on_epoch_end(epoch, epoch_log)
 
     def train_epoch(
             self,
