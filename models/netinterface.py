@@ -159,6 +159,7 @@ class NetInterface(object):
         raise NotImplementedError
 
     def validate(self, dataloader):
+        logger = self._logger
         steps_per_epoch = len(dataloader)
         samples_per_epoch = _get_num_samples(dataloader)
 
