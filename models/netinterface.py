@@ -151,6 +151,10 @@ class NetInterface(object):
         """ function that trains the model over one batch and return batch_log (including size and loss) """
         raise NotImplementedError
 
+    def _vali2_on_batch(self, epoch, batch_ind, dataloader_out):
+        """ function that trains the model over one batch and return batch_log (including size and loss) """
+        raise NotImplementedError
+
     def test_on_batch(self, batch_ind, dataloader_out):
         raise NotImplementedError
 
@@ -163,9 +167,17 @@ class NetInterface(object):
             start_time = time.time()
             data = next(dataiter)
             data_time = time.time() - start_time
-            pred = self.predict(data)
+            logger.on_batch_begin(i)
+            batch_log, pred = self._vali2_on_batch(epoch, i, data)
             print(pred)
-            print(batch['voxel_canon'])
+            print(data['voxel_canon'])
+            batch_log['batch'] = i
+            batch_log['epoch'] = epoch
+            batch_log['data_time'] = data_time
+            batch_log['batch_time'] = time.time() - start_time
+            logger.on_batch_end(i, batch_log)
+        epoch_log = self._internal_logger.get_epoch_log()
+        logger.on_epoch_end(epoch, epoch_log)
 
     def train_epoch(
             self,

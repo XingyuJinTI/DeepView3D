@@ -33,7 +33,7 @@ class Model(TVMarrnetABaseModel):
         self.voxel_key = voxel_key
         self.requires = ['rgb', 'depth', 'normal', 'silhou', voxel_key]
         self.net = Net(8)
-        
+
         # For model evaluation
         if opt.trained_model:
             state_dict = torch.load(opt.trained_model)['nets'][0]
@@ -79,6 +79,20 @@ class Model(TVMarrnetABaseModel):
         batch_size = len(batch['rgb1_path'])
         batch_log = {'size': batch_size, **loss_data}
         return batch_log
+
+    def _vali2_on_batch(self, epoch, batch_idx, batch):
+        pred = self.predict(batch, no_grad=True)
+        _, loss_data = self.compute_loss(pred)
+        if np.mod(epoch, self.opt.vis_every_vali) == 0:
+            if batch_idx < self.opt.vis_batches_vali:
+                outdir = join(self.full_logdir, 'epoch%04d_vali' % epoch)
+                makedirs(outdir, exist_ok=True)
+                output = self.pack_output(pred, batch)
+                self.visualizer.visualize(output, batch_idx, outdir)
+                np.savez(join(outdir, 'batch%04d' % batch_idx), **output)
+        batch_size = len(batch['rgb1_path'])
+        batch_log = {'size': batch_size, **loss_data}
+        return batch_log, pred
 
     def pack_output(self, pred, batch, add_gt=True):
         out = {}
