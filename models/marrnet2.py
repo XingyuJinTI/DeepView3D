@@ -26,6 +26,12 @@ class Model(MarrnetBaseModel):
         self.voxel_key = voxel_key
         self.requires = ['rgb', 'depth', 'normal', 'silhou', voxel_key]
         self.net = Net(4)
+
+        # For model evaluation
+        if opt.trained_model:
+            state_dict = torch.load(opt.trained_model)['nets'][0]
+            self.net.load_state_dict(state_dict)
+            
         self.criterion = nn.BCEWithLogitsLoss(reduction='elementwise_mean')
         self.optimizer = self.adam(
             self.net.parameters(),
@@ -81,7 +87,7 @@ class Model(MarrnetBaseModel):
         iou_data = {}
         iou_data['loss'] = iou.mean().item()
         return iou, iou_data
-    
+
     def pack_output(self, pred, batch, add_gt=True):
         out = {}
         out['rgb_path'] = batch['rgb_path']
