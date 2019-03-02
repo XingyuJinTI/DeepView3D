@@ -90,7 +90,7 @@ class Model(TVMarrnetABaseModel):
     def calculate_iou(self, pred):
         sigm = nn.Sigmoid()
         pred_sigm = sigm(pred)
-        iou = self.evaluate_iou(pred_sigm, getattr(self._gt, self.voxel_key))
+        iou = self.evaluate_iou(getattr(self._gt, self.voxel_key)), getattr(self._gt, self.voxel_key))
         iou_data = {}
         iou_data['loss'] = iou.mean().item()
         return iou, iou_data
