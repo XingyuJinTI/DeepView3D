@@ -172,13 +172,14 @@ class NetInterface(object):
         samples_per_epoch = _get_num_samples(dataloader)
 
         logger.set_params({
-        'epochs': epochs,
-        'steps': steps_per_epoch,
-        'samples': samples_per_epoch,
-        'verbose': 1,
-        'metrics': self._metrics,
+            'epochs': epochs,
+            'steps': steps_per_epoch,
+            'samples': samples_per_epoch,
+            'verbose': 1,
+            'metrics': self._metrics
         })
         logger.set_model(self)
+        logger.on_train_begin()
         for epoch in range(0, epochs):
             logger.eval()
             dataiter = iter(dataloader)
@@ -196,7 +197,8 @@ class NetInterface(object):
                 logger.on_batch_end(i, batch_log)
             epoch_log = self._internal_logger.get_epoch_log()
             logger.on_epoch_end(epoch, epoch_log)
-
+        logger.on_train_end()
+        
     def train_epoch(
             self,
             dataloader,
