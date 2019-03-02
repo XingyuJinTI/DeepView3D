@@ -3,6 +3,7 @@ import time
 import torch.optim as optim
 from torch.nn import init
 import torch
+import numpy as np
 from torch import FloatTensor, tensor
 from loggers.loggers import _LogCumulator
 from util.util_print import str_warning
