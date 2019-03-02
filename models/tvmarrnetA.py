@@ -92,7 +92,7 @@ class Model(TVMarrnetABaseModel):
         pred_sigm = sigm(pred)
         iou = self.evaluate_iou(pred_sigm, getattr(self._gt, self.voxel_key))
         iou_data = {}
-        iou_data['loss'] = loss.mean().item()
+        iou_data['loss'] = iou.mean().item()
         return iou, iou_data
 
     def pack_output(self, pred, batch, add_gt=True):
