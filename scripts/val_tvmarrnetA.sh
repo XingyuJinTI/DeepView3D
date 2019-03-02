@@ -2,13 +2,13 @@
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
 #SBATCH --partition=Standard
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:4
 #SBATCH --mem=12000  # memory in Mb
 #SBATCH --time=0-8:00:00
 #SBATCH --exclude=landonia23
 
 outdir=./output/tvmarrnetA_gpu_val
-trained_model=./downloads/models/tvmarrnetA_80.pt
+trained_model=./downloads/models/best.pt
 
 rm -rf $outdir
 
