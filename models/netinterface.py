@@ -185,7 +185,7 @@ class NetInterface(object):
                 batch_log['epoch'] = epoch
                 batch_log['data_time'] = data_time
                 batch_log['batch_time'] = time.time() - start_time
-#                logger.on_batch_end(i, batch_log)
+                logger.on_batch_end(i, batch_log)
             epoch_log = self._internal_logger.get_epoch_log()
             logger.on_epoch_end(epoch, epoch_log)
 
