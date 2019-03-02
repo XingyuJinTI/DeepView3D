@@ -83,9 +83,9 @@ class Model(TVMarrnetABaseModel):
     def _vali2_on_batch(self, epoch, batch_idx, batch):
         pred = self.predict(batch, no_grad=True)
         _, loss_data = self.calculate_iou(pred)
-        batch_size = len(batch['rgb1_path'])self.compute_loss(pred)
+        batch_size = len(batch['rgb1_path'])
         batch_log = {'size': batch_size, **loss_data}
-        return batch_log, pred
+        return batch_log
 
     def calculate_iou(self, pred):
         sigm = nn.Sigmoid()

@@ -161,8 +161,8 @@ class NetInterface(object):
     def evaluate_iou(self, pred, gt):
         pred = pred > 0.5
         gt = gt > 0.5
-        intersection = np.sum(np.logical_and(prediction,gt))
-        union = np.sum(np.logical_or(prediction,gt))
+        intersection = np.sum(np.logical_and(pred, gt))
+        union = np.sum(np.logical_or(pred, gt))
         iou = intersection / union
         return iou
 
