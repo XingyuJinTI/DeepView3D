@@ -174,7 +174,9 @@ class NetInterface(object):
         logger.set_params({
             'epochs': epochs,
             'steps': steps_per_epoch,
+            'steps_eval': steps_per_epoch,
             'samples': samples_per_epoch,
+            'samples_eval': samples_per_epoch,
             'verbose': 1,
             'metrics': self._metrics
         })
@@ -198,7 +200,7 @@ class NetInterface(object):
             epoch_log = self._internal_logger.get_epoch_log()
             logger.on_epoch_end(epoch, epoch_log)
         logger.on_train_end()
-        
+
     def train_epoch(
             self,
             dataloader,
