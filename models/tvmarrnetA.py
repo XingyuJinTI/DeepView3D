@@ -82,17 +82,18 @@ class Model(TVMarrnetABaseModel):
 
     def _vali2_on_batch(self, epoch, batch_idx, batch):
         pred = self.predict(batch, no_grad=True)
-        _, loss_data = self.compute_loss(pred)
-        if np.mod(epoch, self.opt.vis_every_vali) == 0:
-            if batch_idx < self.opt.vis_batches_vali:
-                outdir = join(self.full_logdir, 'epoch%04d_vali' % epoch)
-                makedirs(outdir, exist_ok=True)
-                output = self.pack_output(pred, batch)
-                self.visualizer.visualize(output, batch_idx, outdir)
-                np.savez(join(outdir, 'batch%04d' % batch_idx), **output)
-        batch_size = len(batch['rgb1_path'])
+        _, loss_data = self.calculate_iou(pred)
+        batch_size = len(batch['rgb1_path'])self.compute_loss(pred)
         batch_log = {'size': batch_size, **loss_data}
         return batch_log, pred
+
+    def calculate_iou(self, pred):
+        sigm = nn.Sigmoid()
+        pred_sigm = sigm(pred)
+        iou = self.evaluate_iou(pred_sigm, getattr(self._gt, self.voxel_key))
+        iou_data = {}
+        iou_data['loss'] = loss.mean().item()
+        return iou, iou_data
 
     def pack_output(self, pred, batch, add_gt=True):
         out = {}
