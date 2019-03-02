@@ -5,6 +5,7 @@
 #SBATCH --gres=gpu:2
 #SBATCH --mem=12000  # memory in Mb
 #SBATCH --time=0-8:00:00
+#SBATCH --exclude=landonia23
 
 outdir=./output/tvmarrnetA_gpu_val
 trained_model=./downloads/models/tvmarrnetA_80.pt
