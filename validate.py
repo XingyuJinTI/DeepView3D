@@ -28,7 +28,7 @@ else:
     device = torch.device('cuda')
 if opt.manual_seed is not None:
     loadlib.set_manual_seed(opt.manual_seed)
-py
+
 print(str_stage, "Setting up logging directory")
 exprdir = '{}_{}_{}'.format(opt.net, opt.dataset, opt.lr)
 exprdir += ('_' + opt.suffix.format(**vars(opt))) if opt.suffix != '' else ''
