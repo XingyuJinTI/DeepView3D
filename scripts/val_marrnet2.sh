@@ -2,7 +2,7 @@
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
 #SBATCH --partition=Standard
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:2
 #SBATCH --mem=12000  # memory in Mb
 #SBATCH --time=0-8:00:00
 #SBATCH --exclude=landonia23
