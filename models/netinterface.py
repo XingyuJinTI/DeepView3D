@@ -172,6 +172,10 @@ class NetInterface(object):
         steps_per_epoch = len(dataloader)
         samples_per_epoch = _get_num_samples(dataloader)
 
+        print("Length of dataloader: {}".format(steps_per_epoch))
+        print("Samples per epoch: {}".format(samples_per_epoch))
+        print("Epochs: {}".format(epochs))
+
         logger.set_params({
             'epochs': epochs,
             'steps': steps_per_epoch,
