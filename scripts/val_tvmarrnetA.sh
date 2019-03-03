@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
-#SBATCH --partition=Standard
+#SBATCH --partition=LongJobs
 #SBATCH --gres=gpu:4
 #SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-8:00:00
+#SBATCH --time=0-72:00:00
 #SBATCH --exclude=landonia23
 
 outdir=./output/tvmarrnetA_gpu_val
