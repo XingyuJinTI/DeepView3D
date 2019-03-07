@@ -32,6 +32,13 @@ class Model(Marrnet2_model):
             type=float, default=0,
             help="Weight for perceptual loss relative to supervised loss"
         )
+        
+        # Model to evaluate
+        parser.add_argument(
+            '--trained_model',
+            type=str, default=None,
+            help='Path to pretrained model'
+        )
         return parser, set()
 
     def __init__(self, opt, logger):
