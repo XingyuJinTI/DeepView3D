@@ -7,9 +7,8 @@
 #SBATCH --time=0-8:00:00
 #SBATCH --exclude=landonia23
 
-outdir=./output/marrnet2_gpu_val
-trained_model=./downloads/models/marrnet.pt
-#trained_model=./output/marrnet2_std_gpu/marrnet2_shapenet_0.001_chair_canon-True/0/best.pt
+outdir=./output/shapehd_val
+trained_model=./downloads/models/shapehd.pt
 
 rm -rf $outdir
 
@@ -29,7 +28,7 @@ set -e
 source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
 python validate.py \
-    --net marrnet2 \
+    --net shapehd \
     --dataset shapenet \
     --classes "$class" \
     --canon_sup \
