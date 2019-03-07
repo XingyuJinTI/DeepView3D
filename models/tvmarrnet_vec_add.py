@@ -3,17 +3,25 @@ from os.path import join
 import numpy as np
 import torch
 import torch.nn as nn
+import torch.optim as optim
 from networks.networks import ImageEncoder, VoxelDecoder
-from .marrnetbase import MarrnetBaseModel
+from .tvmarrnetbase import TVMarrnetBaseModel
 
 
-class Model(MarrnetBaseModel):
+class Model(TVMarrnetBaseModel):
     @classmethod
     def add_arguments(cls, parser):
         parser.add_argument(
             '--canon_sup',
             action='store_true',
             help="Use canonical-pose voxels as supervision"
+        )
+
+        # Model to evaluate
+        parser.add_argument(
+            '--trained_model',
+            type=str, default=None,
+            help='Path to pretrained model'
         )
         return parser, set()
 
@@ -25,7 +33,13 @@ class Model(MarrnetBaseModel):
             voxel_key = 'voxel'
         self.voxel_key = voxel_key
         self.requires = ['rgb', 'depth', 'normal', 'silhou', voxel_key]
-        self.net = Net(8)
+        self.net = Net(4)
+
+        # For model evaluation
+        if opt.trained_model:
+            state_dict = torch.load(opt.trained_model)['nets'][0]
+            self.net.load_state_dict(state_dict)
+
         self.criterion = nn.BCEWithLogitsLoss(reduction='elementwise_mean')
         self.optimizer = self.adam(
             self.net.parameters(),
@@ -67,6 +81,21 @@ class Model(MarrnetBaseModel):
         batch_log = {'size': batch_size, **loss_data}
         return batch_log
 
+    def _vali2_on_batch(self, epoch, batch_idx, batch):
+        pred = self.predict(batch, no_grad=True)
+        _, loss_data = self.calculate_iou(pred)
+        batch_size = len(batch['rgb1_path'])
+        batch_log = {'size': batch_size, **loss_data}
+        return batch_log
+
+    def calculate_iou(self, pred):
+        sigm = nn.Sigmoid()
+        pred_sigm = sigm(pred)
+        iou = self.evaluate_iou(pred_sigm, getattr(self._gt, self.voxel_key))
+        iou_data = {}
+        iou_data['loss'] = iou.mean().item()
+        return iou, iou_data
+
     def pack_output(self, pred, batch, add_gt=True):
         out = {}
         out['rgb1_path'] = batch['rgb1_path']
@@ -101,12 +130,6 @@ class Net(nn.Module):
         self.silhou_thres = silhou_thres
 
     def forward(self, input_struct):
-        #depth = input_struct.depth
-        #normal = input_struct.normal
-        #silhou = input_struct.silhou
-        
-        ##########################################
-        
         depth1 = input_struct.depth1
         normal1 = input_struct.normal1
         silhou1 = input_struct.silhou1
@@ -117,12 +140,15 @@ class Net(nn.Module):
         is_bg1 = silhou1 < self.silhou_thres
         depth1[is_bg1] = 0
         normal1[is_bg1.repeat(1, 3, 1, 1)] = 0
-        
+
         is_bg2 = silhou2 < self.silhou_thres
         depth2[is_bg2] = 0
         normal2[is_bg2.repeat(1, 3, 1, 1)] = 0
-        x = torch.cat((depth1, normal1, depth2, normal2), 1)
+        x1 = torch.cat((depth1, normal1), 1)
+        x2 = torch.cat((depth2, normal2), 1)
         # Forward
-        latent_vec = self.encoder(x)  
+        latent_vec1 = self.encoder(x1)
+        latent_vec2 = self.encoder(x2)
+        latent_vec = torch.add(latent_vec1, latent_vec2)
         vox = self.decoder(latent_vec)
         return vox

@@ -4,10 +4,10 @@ import numpy as np
 import torch
 import torch.nn as nn
 from networks.networks import ImageEncoder, VoxelDecoder
-from .tvmarrnetAbase import TVMarrnetABaseModel
+from .tvmarrnetbase import TVMarrnetBaseModel
 
 
-class Model(TVMarrnetABaseModel):
+class Model(TVMarrnetBaseModel):
     @classmethod
     def add_arguments(cls, parser):
         parser.add_argument(

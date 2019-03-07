@@ -2,6 +2,56 @@ import torch.nn as nn
 from .revresnet import resnet18
 from torch import cat
 
+class VectorFuserSingleLayer(nn.Module):
+    """
+    Used for fuse latent vector (batch, 200 channels, 2)
+    """
+    def __init__(self, n_dims=200, output_nc=200):
+        super().__init__()
+        self.main = nn.Sequential(
+            # fuserConv1
+            nn.Conv1d(n_dims, output_nc, 2, stride=1, padding=0, dilation=1, groups=1, bias=True)
+        )
+
+    def forward(self, x):
+        return self.main(x)
+
+class VectorFuserMultiLayerA(nn.Module):
+    """
+    Used for fuse latent vector (batch, 200 channels, 2)
+    """
+    def __init__(self, n_dims=200, output_nc=200):
+        super().__init__()
+        self.main = nn.Sequential(
+            # fuserConv1
+            nn.Conv1d(n_dims, output_nc, 2, stride=1, padding=1, dilation=1, groups=1, bias=True),
+            batchnorm1d(output_nc),
+            relu_leaky(),
+            nn.Conv1d(n_dims, output_nc, 2, stride=1, padding=0, dilation=1, groups=1, bias=True),
+            batchnorm1d(output_nc),
+            relu_leaky(),
+            nn.Conv1d(n_dims, output_nc, 2, stride=1, padding=0, dilation=1, groups=1, bias=True)
+        )
+
+    def forward(self, x):
+        return self.main(x)
+
+class VectorFuserMultiLayerB(nn.Module):
+    """
+    Used for fuse latent vector (batch,200 channels,2)
+    """
+    def __init__(self,n_dims=200,output_nc=200):
+        super().__init__()
+        self.main = nn.Sequential(
+                #fuseConv1
+                nn.Conv1d(n_dims,output_nc,2,stride=1,padding=1,dilation=1,groups=1,bias=True),
+                batchnorm1d(output_nc),
+                relu_leaky(),
+                nn.Conv1d(n_dims,output_nc,3,stride=1,padding=0,dilation=1,groups=1,bias=True),
+                )
+    def forward(self,x):
+        return self.main(x)
+
 
 class ImageEncoder(nn.Module):
     """

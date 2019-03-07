@@ -8,7 +8,7 @@ from toolbox.cam_bp.cam_bp.functions import CameraBackProjection
 import util.util_img
 
 
-class TVMarrnetABaseModel(NetInterface):
+class TVMarrnetBaseModel(NetInterface):
     im_size = 256
     rgb_jitter_d = 0.4
     rgb_light_noise = 0.1
@@ -17,7 +17,7 @@ class TVMarrnetABaseModel(NetInterface):
     scale_25d = 100
 
     def __init__(self, opt, logger):
-        super(TVMarrnetABaseModel, self).__init__(opt, logger)
+        super(TVMarrnetBaseModel, self).__init__(opt, logger)
         self.opt = opt
         self.n_batches_per_epoch = opt.epoch_batches
         self.n_batches_to_vis_train = opt.vis_batches_train
