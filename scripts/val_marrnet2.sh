@@ -7,11 +7,8 @@
 #SBATCH --time=0-8:00:00
 #SBATCH --exclude=landonia23
 
-outdir=./output/marrnet2_gpu_val
 trained_model=./downloads/models/marrnet.pt
 #trained_model=./output/marrnet2_std_gpu/marrnet2_shapenet_0.001_chair_canon-True/0/best.pt
-
-rm -rf $outdir
 
 export STUDENT_ID=$(whoami)
 
@@ -19,14 +16,18 @@ if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
     exit 1
 fi
+outdir=./output/marrnet2_gpu_val
 pred_thresh=0.3
 if [ $# -ge 3 ]; then
+    outdir=./output/marrnet2_gpu_val_$3
     pred_thresh=$3
 fi
 gpu="$1"
 class="$2"
 shift # shift the remaining arguments
 shift
+
+rm -rf $outdir
 
 set -e
 
