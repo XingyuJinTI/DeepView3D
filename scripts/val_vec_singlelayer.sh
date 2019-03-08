@@ -30,6 +30,7 @@ source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 python validate.py \
     --net tvmarrnet_vec_singlelayer \
     --dataset shapenet2 \
+    --pred_thresh 0.3 \
     --classes "$class" \
     --canon_sup \
     --trained_model "$trained_model"\

@@ -22,6 +22,12 @@ class Model(MarrnetBaseModel):
             type=str, default=None,
             help='Path to pretrained model'
         )
+
+        parser.add_argument(
+            '--pred_thresh',
+            type=float, default=0.5,
+            help='Prediction evaluation threshold'
+        )
         return parser, set()
 
     def __init__(self, opt, logger):
@@ -39,6 +45,7 @@ class Model(MarrnetBaseModel):
             state_dict = torch.load(opt.trained_model)['nets'][0]
             self.net.load_state_dict(state_dict)
 
+        self.pred_thresh = opt.pred_thresh
         self.criterion = nn.BCEWithLogitsLoss(reduction='elementwise_mean')
         self.optimizer = self.adam(
             self.net.parameters(),
@@ -90,7 +97,7 @@ class Model(MarrnetBaseModel):
     def calculate_iou(self, pred):
         sigm = nn.Sigmoid()
         pred_sigm = sigm(pred)
-        iou = self.evaluate_iou(pred_sigm, getattr(self._gt, self.voxel_key))
+        iou = self.evaluate_iou(pred_sigm, getattr(self._gt, self.voxel_key), self.pred_thresh)
         iou_data = {}
         iou_data['loss'] = iou.mean().item()
         return iou, iou_data

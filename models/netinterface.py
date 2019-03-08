@@ -159,8 +159,8 @@ class NetInterface(object):
     def test_on_batch(self, batch_ind, dataloader_out):
         raise NotImplementedError
 
-    def evaluate_iou(self, pred, gt):
-        pred = np.array(pred) > 0.5
+    def evaluate_iou(self, pred, gt, pred_thresh=0.5):
+        pred = np.array(pred) > pred_thresh
         gt = np.array(gt) > 0.5
         intersection = np.sum(np.logical_and(pred, gt))
         union = np.sum(np.logical_or(pred, gt))

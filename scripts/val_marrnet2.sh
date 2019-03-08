@@ -31,6 +31,7 @@ source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 python validate.py \
     --net marrnet2 \
     --dataset shapenet \
+    --pred_thresh 0.3 \
     --classes "$class" \
     --canon_sup \
     --trained_model "$trained_model"\
