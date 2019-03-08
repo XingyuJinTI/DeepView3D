@@ -18,6 +18,10 @@ if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
     exit 1
 fi
+pred_thresh=0.3
+if [ $# -ge 3 ]; then
+    pred_thresh=$3
+fi
 gpu="$1"
 class="$2"
 shift # shift the remaining arguments
@@ -30,7 +34,7 @@ source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 python validate.py \
     --net tvmarrnet_vec_singlelayer \
     --dataset shapenet2 \
-    --pred_thresh 0.3 \
+    --pred_thresh $pred_thresh \
     --classes "$class" \
     --canon_sup \
     --trained_model "$trained_model"\
