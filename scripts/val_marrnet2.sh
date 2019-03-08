@@ -7,7 +7,7 @@
 #SBATCH --time=0-8:00:00
 #SBATCH --exclude=landonia23
 
-trained_model=./downloads/models/marrnet.pt
+trained_model=./downloads/models/marrnet2.pt
 #trained_model=./output/marrnet2_std_gpu/marrnet2_shapenet_0.001_chair_canon-True/0/best.pt
 
 export STUDENT_ID=$(whoami)
@@ -16,15 +16,20 @@ if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
     exit 1
 fi
+gpu="$1"
+class="$2"
+
 outdir=./output/marrnet2_gpu_val
 pred_thresh=0.3
 if [ $# -ge 3 ]; then
-    outdir=./output/marrnet2_gpu_val_$3
-    pred_thresh=$3
+    pred_thresh="$3"
+    outdir=./output/marrnet2_gpu_val_${pred_thresh}
+    echo "pred_thresh: $pred_thresh"
+    echo "$outdir"
 fi
-gpu="$1"
-class="$2"
+
 shift # shift the remaining arguments
+shift
 shift
 
 rm -rf $outdir
@@ -36,7 +41,7 @@ source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 python validate.py \
     --net marrnet2 \
     --dataset shapenet \
-    --pred_thresh $pred_thresh \
+    --pred_thresh "$pred_thresh" \
     --classes "$class" \
     --canon_sup \
     --trained_model "$trained_model"\
