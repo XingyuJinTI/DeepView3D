@@ -188,6 +188,7 @@ class NetInterface(object):
         logger.set_model(self)
         logger.on_train_begin()
         for epoch in range(0, epochs):
+            self.eval()
             logger.eval()
             dataiter = iter(dataloader)
             logger.on_epoch_begin(epoch)
