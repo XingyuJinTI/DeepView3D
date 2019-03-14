@@ -47,7 +47,7 @@ class Model(TVMarrnetBaseModel):
         )
         self._nets = [self.net]
         self._optimizers.append(self.optimizer)
-        self.input_names = ['depth1', 'normal1', 'silhou1', 'depth2', 'normal2', 'silhou2']
+        self.input_names = ['rgb1', 'depth1', 'normal1', 'silhou1', 'rgb2', 'depth2', 'normal2', 'silhou2']
         self.gt_names = [voxel_key]
         self.init_vars(add_path=True)
         self._metrics = ['loss']
