@@ -8,6 +8,8 @@ code_test
 private
 
 downloads/models/
+sendGoogle/
+models/*.pth
 
 !downloads/data/shapenet/
 downloads/data/shapenet/*

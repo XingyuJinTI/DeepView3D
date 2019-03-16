@@ -78,7 +78,8 @@ class TVMarrnetBaseModel(NetInterface):
             if key.startswith('rgb') and not key.endswith('_path'):
                 im = val
                 # H x W x 3
-                im = util.util_img.resize(im, cls.im_size, 'horizontal')
+                
+                im = util.util_img.resize(im, 227, 'horizontal')# 227 is only for rgb to get viewpoints
                 if mode == 'train':
                     im = util.util_img.jitter_colors(
                         im,
