@@ -1,22 +1,38 @@
 #!/usr/bin/env bash
+#SBATCH -N 1	  # nodes requested
+#SBATCH -n 1	  # tasks requested
+#SBATCH --partition=Standard
+#SBATCH --gres=gpu:1
+#SBATCH --mem=12000  # memory in Mb
+#SBATCH --time=0-8:00:00
+#SBATCH --exclude=landonia23
+
+export STUDENT_ID=$(whoami)
+
+
+
 
 # Finetune ShapeHD 3D estimator with GAN losses
 
 outdir=./output/shapehd
-class=drc
-marrnet2=/path/to/marrnet2.pt
+rm -rf $outdir
+
+marrnet2=./downloads/models/marrnet2.pt
 gan=/path/to/gan.pt
 
 if [ $# -lt 2 ]; then
-    echo "Usage: $0 gpu[ ...]"
+    echo "Usage: $0 gpu class[ ...]"
     exit 1
 fi
 gpu="$1"
+class="$2"
 shift # shift the remaining arguments
+shift
 
 set -e
 
-source activate shaperecon
+
+source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
 python train.py \
     --net shapehd \
@@ -41,4 +57,4 @@ python train.py \
     --tensorboard \
     $*
 
-source deactivate
+source /home/${STUDENT_ID}/miniconda3/bin/deactivate shaperecon

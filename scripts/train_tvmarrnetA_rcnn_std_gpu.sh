@@ -1,6 +1,35 @@
 #!/usr/bin/env bash
+#SBATCH -N 1      # nodes requested
+#SBATCH -n 1      # tasks requested
+#SBATCH --partition=Standard
+#SBATCH --gres=gpu:1
+#SBATCH --mem=12000  # memory in Mb
+#SBATCH --time=0-0:40:00
 
-outdir=./output/marrnet2_std_gpu
+export CUDA_HOME=/opt/cuda-9.0.176.1/
+
+export CUDNN_HOME=/opt/cuDNN-7.0/
+
+export STUDENT_ID=$(whoami)
+
+export TEAM_NAME='teebeedee'
+
+export LD_LIBRARY_PATH=${CUDNN_HOME}/lib64:${CUDA_HOME}/lib64:$LD_LIBRARY_PATH
+
+export LIBRARY_PATH=${CUDNN_HOME}/lib64:$LIBRARY_PATH
+
+export CPATH=${CUDNN_HOME}/include:$CPATH
+
+export PATH=${CUDA_HOME}/bin:${PATH}
+
+export PYTHON_PATH=$PATH
+
+mkdir -p /disk/scratch/${STUDENT_ID}
+
+export TMPDIR=/disk/scratch/${STUDENT_ID}/
+export TMP=/disk/scratch/${STUDENT_ID}/
+
+outdir=./output/tvmarrnetA_rcnn_std_gpu
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
@@ -11,7 +40,7 @@ class="$2"
 shift # shift the remaining arguments
 shift
 
-rm -rf ${outdir}/marrnet2_shapenet_0.001_chair_canon-True/0/tensorboard
+rm -rf ${outdir}/tvmarrnetA_shapenet2_0.001_chair_canon-True/0/tensorboard
 
 set -e
 
@@ -38,8 +67,8 @@ set -e
 source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
 python train.py \
-    --net marrnet2 \
-    --dataset shapenet \
+    --net tvmarrnet_vp \
+    --dataset shapenet2 \
     --classes "$class" \
     --canon_sup \
     --batch_size 4 \
@@ -47,7 +76,7 @@ python train.py \
     --eval_batches 5 \
     --optim adam \
     --lr 1e-3 \
-    --epoch 9 \
+    --epoch 300 \
     --vis_batches_vali 10 \
     --gpu "$gpu" \
     --save_net 10 \

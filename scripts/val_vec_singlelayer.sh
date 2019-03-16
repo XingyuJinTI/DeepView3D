@@ -7,8 +7,8 @@
 #SBATCH --time=0-72:00:00
 #SBATCH --exclude=landonia23
 
-trained_model=./downloads/models/tvmarrnet_vec_singlelayer.pt
-
+#trained_model=./downloads/models/tvmarrnet_vec_singlelayer.pt
+trained_model=/home/s1836694/mlpractical/GenRe-ShapeHD/output/marrnet2_vec_parallel_1layer/marrnet2_vec_parallel_1layer_shapenet_0.001_chair_canon-True/0/best.pt
 export STUDENT_ID=$(whoami)
 
 if [ $# -lt 2 ]; then

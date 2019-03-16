@@ -1,7 +1,16 @@
 #!/usr/bin/env bash
+#SBATCH -N 1      # nodes requested
+#SBATCH -n 1      # tasks requested
+#SBATCH --partition=LongJobs
+#SBATCH --gres=gpu:1
+#SBATCH --mem=12000  # memory in Mb
+#SBATCH --time=0-72:00:00
+#SBATCH --exclude=landonia23
+
 
 outdir=./output/wgangp
-
+rm -rf $outdir
+export STUDENT_ID=$(whoami)
 if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
     exit 1
@@ -13,7 +22,7 @@ shift
 
 set -e
 
-source activate shaperecon
+source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
 
 python train.py \
     --net wgangp \
@@ -36,4 +45,4 @@ python train.py \
     --tensorboard \
     $*
 
-source deactivate
+source /home/${STUDENT_ID}/miniconda3/bin/deactivate shaperecon
