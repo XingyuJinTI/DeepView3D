@@ -41,7 +41,7 @@ python validate.py \
     --eval_batches 5 \
     --optim adam \
     --lr 1e-3 \
-    --epoch 1000 \
+    --epoch 1 \
     --vis_batches_vali 10 \
     --gpu "$gpu" \
     --save_net 10 \

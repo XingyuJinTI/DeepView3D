@@ -33,6 +33,6 @@ python train.py \
     --logdir "$outdir" \
     --suffix '{classes}_canon-{canon_sup}' \
     --tensorboard \
-     --resume -1 \
+    --resume -1 \
     $*
 source deactivate

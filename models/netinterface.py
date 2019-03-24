@@ -161,9 +161,9 @@ class NetInterface(object):
         raise NotImplementedError
 
     def evaluate_iou(self, pred, gt, pred_thresh=0.5):
-        max_pool3d = nn.MaxPool3d(4)
-        pred = max_pool3d(pred)
-        gt = max_pool3d(gt)
+        #avg_pool3d = nn.AvgPool3d(4)
+        #pred = avg_pool3d(pred)
+        #gt = avg_pool3d(gt)
         pred = np.array(pred) > pred_thresh
         gt = np.array(gt) > 0.5
         intersection = np.sum(np.logical_and(pred, gt))
