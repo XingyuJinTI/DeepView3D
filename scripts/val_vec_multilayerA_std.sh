@@ -2,12 +2,13 @@
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
 #SBATCH --partition=Standard
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:1
 #SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-8:00:00
+#SBATCH --time=0-1:00:00
 #SBATCH --exclude=landonia23
 
-trained_model=./downloads/models/tvmarrnet_vec_multilayerA.pt
+#trained_model=./downloads/models/tvmarrnet_vec_multilayerA.pt
+trained_model=/home/s1836694/mlpractical/GenRe-ShapeHD/output/marrnet2_vec_multilayer/marrnet2_vec_multilayer_shapenet_0.001_chair_canon-True/0/best.pt
 
 export STUDENT_ID=$(whoami)
 

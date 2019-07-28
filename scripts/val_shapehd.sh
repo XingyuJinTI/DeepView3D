@@ -2,13 +2,14 @@
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
 #SBATCH --partition=Standard
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:1
 #SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-8:00:00
+#SBATCH --time=0-1:00:00
 #SBATCH --exclude=landonia23
 
 outdir=./output/shapehd_val
-trained_model=./downloads/models/shapehd.pt
+#trained_model=./downloads/models/shapehd.pt
+ttrained_model=./downloads/models/marrnet2.pt
 
 rm -rf $outdir
 
@@ -31,6 +32,7 @@ python validate.py \
     --net shapehd \
     --dataset shapenet \
     --classes "$class" \
+    --pred_thresh 0.3 \
     --canon_sup \
     --trained_model "$trained_model"\
     --batch_size 4 \

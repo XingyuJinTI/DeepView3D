@@ -2,6 +2,7 @@
 import time
 import torch.optim as optim
 from torch.nn import init
+import torch.nn as nn
 import torch
 import numpy as np
 from torch import FloatTensor, tensor
@@ -160,6 +161,9 @@ class NetInterface(object):
         raise NotImplementedError
 
     def evaluate_iou(self, pred, gt, pred_thresh=0.5):
+        #avg_pool3d = nn.AvgPool3d(4)
+        #pred = avg_pool3d(pred)
+        #gt = avg_pool3d(gt)
         pred = np.array(pred) > pred_thresh
         gt = np.array(gt) > 0.5
         intersection = np.sum(np.logical_and(pred, gt))
@@ -188,7 +192,7 @@ class NetInterface(object):
         logger.set_model(self)
         logger.on_train_begin()
         for epoch in range(0, epochs):
-            self.eval()
+            #self.eval()
             logger.eval()
             dataiter = iter(dataloader)
             logger.on_epoch_begin(epoch)

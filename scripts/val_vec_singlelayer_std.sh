@@ -2,12 +2,13 @@
 #SBATCH -N 1      # nodes requested
 #SBATCH -n 1      # tasks requested
 #SBATCH --partition=Standard
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:1
 #SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-8:00:00
+#SBATCH --time=0-1:00:00
 #SBATCH --exclude=landonia23
 
-trained_model=./downloads/models/tvmarrnet_vec_singlelayer.pt
+#trained_model=./downloads/models/tvmarrnet_vec_singlelayer.pt
+trained_model=/home/s1836694/mlpractical/GenRe-ShapeHD/output/marrnet2_vec_parallel_1layer/marrnet2_vec_parallel_1layer_shapenet_0.001_chair_canon-True/0/best.pt
 
 export STUDENT_ID=$(whoami)
 
@@ -44,7 +45,7 @@ python validate.py \
     --classes "$class" \
     --canon_sup \
     --trained_model "$trained_model"\
-    --batch_size 4 \
+    --batch_size 1 \
     --epoch_batches 2500 \
     --eval_batches 5 \
     --optim adam \

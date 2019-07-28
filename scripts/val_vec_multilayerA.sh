@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
-#SBATCH -N 1      # nodes requested
-#SBATCH -n 1      # tasks requested
-#SBATCH --partition=LongJobs
-#SBATCH --gres=gpu:4
-#SBATCH --mem=12000  # memory in Mb
-#SBATCH --time=0-72:00:00
-#SBATCH --exclude=landonia23
 
 trained_model=./downloads/models/tvmarrnet_vec_multilayerA.pt
 
-export STUDENT_ID=$(whoami)
 
 if [ $# -lt 2 ]; then
     echo "Usage: $0 gpu class[ ...]"
@@ -35,7 +27,7 @@ rm -rf $outdir
 
 set -e
 
-source /home/${STUDENT_ID}/miniconda3/bin/activate shaperecon
+source activate shaperecon
 
 python validate.py \
     --net tvmarrnet_vec_multilayerA \
@@ -49,7 +41,7 @@ python validate.py \
     --eval_batches 5 \
     --optim adam \
     --lr 1e-3 \
-    --epoch 1000 \
+    --epoch 1 \
     --vis_batches_vali 10 \
     --gpu "$gpu" \
     --save_net 10 \
@@ -59,4 +51,4 @@ python validate.py \
     --tensorboard \
     $*
 
-source /home/${STUDENT_ID}/miniconda3/bin/deactivate
+source deactivate

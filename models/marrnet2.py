@@ -43,6 +43,14 @@ class Model(MarrnetBaseModel):
         # For model evaluation
         if opt.trained_model:
             state_dict = torch.load(opt.trained_model)['nets'][0]
+#            if 'shapehd' is in opt.trained_model:
+#                temp_dict = {}
+#                for key in state_dict.keys():
+#                    if key.startswith("marrnet2."):
+#                        temp_dict[key[9:len(key)]] = state_dict[key]
+#                self.net.load_state_dict(temp_dict)
+#            else:
+#                self.net.load_state_dict(state_dict)
             self.net.load_state_dict(state_dict)
 
         self.pred_thresh = opt.pred_thresh
