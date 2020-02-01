@@ -1,5 +1,6 @@
-# Generalizable Reconstruction (GenRe) and ShapeHD
+# 3D Reconstruction from Two-View images by exploiting viewpoint
 
+Building on the repo of Generalizable Reconstruction (GenRe) and ShapeHD
 
 ## Papers
 
