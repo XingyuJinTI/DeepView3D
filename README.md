@@ -1,30 +1,38 @@
-# 3D Reconstruction from Two-View images by exploiting viewpoint
+# 3D Reconstruction from Two-View images by exploiting viewpoint relation
 
-Building on the repo of Generalizable Reconstruction (GenRe) and ShapeHD
+We proposed a state-of-the-art 3D shape reconstruction algorithm, DeepView which explicitly esimates the viewpoint of each input/view of an object and infers the viewpoint relation.
+
+This work won **1st Place of IBM Machine Learning Prize** competition, which was assessed by a panel of industry expert from IBM and Senior acamdemics from University of Edinburgh.
+
+## Introduction
+The state-of-the-art methods that reconstruct 3D shape from a single view, is limited because there are parts of the object that are hidden from a 2D view input. To improve this, we first proposed the [Two-View MarrNet](https://github.com/Xingyu-Jin/Two-view-3D-construction.git) architecture which takes in an additional view as input and combines two input views using various fusion techniques. The best model which concatenates the latent vectors of the two views improves the reconstruction accuracy over the baseline by **4.2% (IoU)** – on a dataset derived from ShapeNet. Futhermore, we proposed our novel DeepView architecture which explicitly estimates the viewpoint of each input and infers the viewpoint relation. 
+
+Overall, the [DeepView](https://github.com/Xingyu-Jin/DeepView3D.git) architecture improves the accuracy of 3D reconstruction by **4.8% (IoU)** over the baseline. It also converges **35% faster** than the baseline.
+
+<img src="src/deepview.png" width="760">
+
 
 ## Papers
 
-This is a repo covering the following three papers. If you find the code useful, please cite the paper(s).
+This is a repo covering the following two papers. 
 
-1. Generalizable Reconstruction (GenRe)<br/>
-**Learning to Reconstruct Shapes from Unseen Classes**<br/>
-[Xiuming Zhang](http://people.csail.mit.edu/xiuming/)&ast;, [Zhoutong Zhang](https://www.csail.mit.edu/person/zhoutong-zhang)&ast;, [Chengkai Zhang](https://www.csail.mit.edu/person/chengkai-zhang), [Joshua B. Tenenbaum](http://web.mit.edu/cocosci/josh.html), [William T. Freeman](https://billf.mit.edu/), and [Jiajun Wu](https://jiajunwu.com/)<br/>
-*NeurIPS 2018 (Oral)*<br/>
-[Paper](http://genre.csail.mit.edu/papers/genre_nips.pdf) &nbsp; | &nbsp; [BibTeX](http://genre.csail.mit.edu/bibtex/genre_nips.bib) &nbsp; | &nbsp; [Project](http://genre.csail.mit.edu/)
+1. DeepView3D<br/>
+**3D Shape Reconstruction from Two View Images via explicit viewpoint estimation and viewpoint relation inference**<br/>
+[Xingyu Jin](https://www.linkedin.com/in/eddie-xingyu-jin/), Siqing Geng, and Mek Bhumiwat<br/>
+*First Place -- IBM Machine Learning Prize 2019, IBM and University of Edinburgh*<br/>
+[Report](https://drive.google.com/file/d/1bFkCvV8H3wrsdBJbaRIOuEFsZkIrs3mL/view?usp=share_link) &nbsp; | &nbsp; [Slides](https://drive.google.com/file/d/1mlLPBmGnhuWhpHFWcZA4UvCuQSmyIUJl/view?usp=share_link) &nbsp; | &nbsp; [Project](https://github.com/Xingyu-Jin/DeepView3D.git)<br/>
 
-	&ast; indicates equal contribution.
-
-1. ShapeHD<br/>
-**Learning Shape Priors for Single-View 3D Completion and Reconstruction**<br/>
-[Jiajun Wu](https://jiajunwu.com/)&ast;, [Chengkai Zhang](https://www.csail.mit.edu/person/chengkai-zhang)&ast;, [Xiuming Zhang](http://people.csail.mit.edu/xiuming/), [Zhoutong Zhang](https://www.csail.mit.edu/person/zhoutong-zhang), [William T. Freeman](https://billf.mit.edu/), and [Joshua B. Tenenbaum](http://web.mit.edu/cocosci/josh.html)<br/>
-*ECCV 2018*<br/>
-[Paper](http://shapehd.csail.mit.edu/papers/shapehd_eccv.pdf) &nbsp; | &nbsp; [BibTeX](http://shapehd.csail.mit.edu/bibtex/shapehd_eccv.bib) &nbsp; | &nbsp; [Project](http://shapehd.csail.mit.edu/)
+1. Two-View Marrnet<br/>
+**Fusing Two Views for 3D Completion and Reconstruction**<br/>
+[Xingyu Jin](https://www.linkedin.com/in/eddie-xingyu-jin/), Siqing Geng, and Mek Bhumiwat<br/>
+*First Place -- IBM Machine Learning Prize 2019, IBM and University of Edinburgh*<br/>
+[Report](https://drive.google.com/file/d/1bFkCvV8H3wrsdBJbaRIOuEFsZkIrs3mL/view?usp=share_link) &nbsp; | &nbsp; [Slides](https://drive.google.com/file/d/1mlLPBmGnhuWhpHFWcZA4UvCuQSmyIUJl/view?usp=share_link) &nbsp; | &nbsp; [Project](https://github.com/Xingyu-Jin/Two-view-3D-construction.git)<br/>
 
 1. MarrNet<br/>
 **MarrNet: 3D Shape Reconstruction via 2.5D Sketches**<br/>
 [Jiajun Wu](https://jiajunwu.com/)&ast;, [Yifan Wang](https://homes.cs.washington.edu/~yifan1/)&ast;, [Tianfan Xue](https://people.csail.mit.edu/tfxue/), [Xingyuan Sun](http://people.csail.mit.edu/xingyuan/), [William T. Freeman](https://billf.mit.edu/), and [Joshua B. Tenenbaum](http://web.mit.edu/cocosci/josh.html)<br/>
 *NeurIPS 2017*<br/>
-[Paper](http://marrnet.csail.mit.edu/papers/marrnet_nips.pdf) &nbsp; | &nbsp; [BibTeX](http://marrnet.csail.mit.edu/bibtex/marrnet_nips.bib) &nbsp; | &nbsp; [Project](http://marrnet.csail.mit.edu/)
+[Paper](http://marrnet.csail.mit.edu/papers/marrnet_nips.pdf) &nbsp; | &nbsp; Slides &nbsp; | &nbsp; [Project](http://marrnet.csail.mit.edu/)
 
 
 
@@ -35,8 +43,8 @@ All code was built and tested on Ubuntu 16.04.5 LTS with Python 3.6, PyTorch 0.4
 1. Clone this repo with
 	```
     # cd to the directory you want to work in
-	git clone https://github.com/xiumingzhang/GenRe-ShapeHD.git
-	cd GenRe-ShapeHD
+	git clone https://github.com/Xingyu-Jin/DeepView3D.git
+	cd DeepView3D
 	```
 	The code below assumes you are at the repo root.
 
@@ -148,6 +156,16 @@ Follow these steps to train the MarrNet model, excluding the reprojection consis
 1. Train the 2.5D-to-3D network with `scripts/train_marrnet2.sh`
 1. Finetune the 2.5D-to-3D network with `scripts/finetune_marrnet.sh`
 
+## Result
+
+Here are some most challenging examples of reconstructed 3D shapes from DeepView compared with Two-View MarrNet (Multi-layer B) and ground truth. The reconstructed 3D shapes from DeepView tend to be more complete with higher details than those from Two-View MarrNet.
+
+<img src="src/dv_result.png" width="750">
+
+The following table shows 3D reconstruction performances (IoU and loss) of DeepView compared with the best Two-View MarrNet (vector concatenation) and baseline (MarrNet) on test set. Best IoU performance is shown in bold.
+
+<img src="src/dv_table.png" width="350">
+
 
 ## Questions
 
@@ -156,4 +174,4 @@ Please open an issue if you encounter any problem.
 
 ## Changelog
 
-* Dec. 28, 2018: Initial Release
+* Dec. 28, 2019: Initial Release
